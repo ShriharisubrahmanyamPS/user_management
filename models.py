@@ -1,14 +1,15 @@
-from app import db
+from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
-class User(db.Model):
-    _tablename_ = 'user_details'
-    user_id = db.Column(db.Integer, primary_key=True)
+db = SQLAlchemy()
+
+class Users(db.Model):
+    _tablename_ = 'Users'
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
-    email = db.Column(db.String(120), unique=True)
     password = db.Column(db.String(80))
-    created_on=db.Column(db.DateTime, default=datetime.utcnow)
-    updated_on=db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    createdAt=db.Column(db.DateTime, default=datetime.utcnow)
+    updatedAt=db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
 class Role(db.Model):
@@ -19,7 +20,7 @@ class Role(db.Model):
 class UserRole(db.Model):
     _tablename_ = 'user_roles'
     user_role_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user_details.user_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.role_id'))
 
 #define a table to store the to-do list
