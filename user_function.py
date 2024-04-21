@@ -37,9 +37,9 @@ def add_user():
         for user in users_data:
             if username in user[1]:
                 return jsonify({'message': 'Username already exists!'}), 400
-        insert_query_user="INSERT INTO to_do_app.Users (username, password, createdAt, updatedAt) VALUES('%s', '%s', %s, %s);"
+        insert_query_user="INSERT INTO to_do_app.Users (username, password, createdAt, updatedAt) VALUES(%s, %s, %s, %s);"
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        cur.execute(insert_query_user,(username,hashed_password,'2024-04-14 13:21:26.000','2024-04-14 13:21:26.000'))
+        cur.execute(insert_query_user,(username,str(hashed_password),datetime.now(),datetime.now()))
         user_id= cur.lastrowid
         print('user_id',user_id)
         conn.commit()
@@ -47,7 +47,7 @@ def add_user():
         cur.execute(roles,(str(role)))
         role_id=roles[0]
         print('role_id',role_id)
-        insert_query_role="INSERT INTO to_do_app.user_roles (user_id, role_id) VALUES(%d, %d);"
+        insert_query_role="INSERT INTO to_do_app.user_roles (user_id, role_id) VALUES(%s, %s);"
         cur.execute(insert_query_role,(user_id,role_id))
         conn.commit()
         cur.close() 

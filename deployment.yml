@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-user-service
+  labels:
+    app: todo-user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-user
+  template:
+    metadata:
+      labels:
+        app: todo-user-service
+    spec:
+      containers:
+        - name: todo-user-service
+          image: todo-user-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
